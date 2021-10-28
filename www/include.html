@@ -1,2 +1,25 @@
-<p>Include HTML </p>
-<p x-data="index" x-text="includeValue">Loading</p>
+<html lang="en">
+  <head>
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <p>Include HTML</p>
+    <p x-data="index" x-text="includeValue">Loading</p>
+    <div
+      x-data="{message : 'Waiting on Shiny'}"
+      x-on:first-message.window="message = $event.detail.message"
+    >
+      <p x-text="message"></p>
+      <button @click="sendMessage(message)">Send</button>
+    </div>
+    <div x-data="tableTest">
+      <template x-for="row in data">
+        <p x-text="row.one + ' '+ row.two"></p>
+      </template>
+    </div>
+  </body>
+</html>
