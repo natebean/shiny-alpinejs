@@ -1,6 +1,7 @@
 
 
 
+
 library(shiny)
 
 ui <- fluidPage(
@@ -9,15 +10,16 @@ ui <- fluidPage(
   #   tags$script(src = "index.js"),
   # ),
   h1("Hello World"),
-  p(`x-data` = "index", `x-text` = "value"),
   includeHTML("www/include.html"),
-  textOutput("first_round_trip")
+  div(class = "container",
+      p("From Shiny"),
+      textOutput("first_round_trip"))
 )
 
 server <- function(input, output, session) {
   session$sendCustomMessage("message-from-shiny", "Hi from Shiny")
   print("running")
-
+  
   output$first_round_trip <- renderText({
     print("first_input")
     paste(input$first_input, " and back")

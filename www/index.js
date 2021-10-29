@@ -50,7 +50,7 @@ window.addEventListener("load", function () {
 
   if (typeof Shiny !== "undefined") {
     Shiny.addCustomMessageHandler("message-from-shiny", function (message) {
-      console.log(message);
+      console.log("Shiny Message:", message);
       let event = new CustomEvent("message-from-shiny", {
         detail: {
           message: message,
