@@ -15,14 +15,13 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  session$sendCustomMessage("first-message-from-shiny", "Hi from Shiny")
-  print('running')
-  
+  session$sendCustomMessage("message-from-shiny", "Hi from Shiny")
+  print("running")
+
   output$first_round_trip <- renderText({
-    print('first_input')
+    print("first_input")
     paste(input$first_input, " and back")
   })
-  
 }
 
 # Run the application

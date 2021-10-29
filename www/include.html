@@ -1,5 +1,11 @@
 <html lang="en">
   <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+      integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+      crossorigin="anonymous"
+    />
     <script
       defer
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
@@ -7,19 +13,54 @@
     <script src="index.js"></script>
   </head>
   <body>
-    <p>Include HTML</p>
-    <p x-data="index" x-text="includeValue">Loading</p>
     <div
-      x-data="{message : 'Waiting on Shiny'}"
-      x-on:first-message.window="message = $event.detail.message"
+      x-data="{ tableData: { columns: [], data: [] } }"
+      x-on:data-refresh.window="tableData = $event.detail.tableData"
+      id="app"
+      class="container"
     >
-      <p x-text="message"></p>
-      <button @click="sendMessage(message)">Send</button>
-    </div>
-    <div x-data="tableTest">
-      <template x-for="row in data">
-        <p x-text="row.one + ' '+ row.two"></p>
-      </template>
+      <p id="template">Hi HTML</p>
+      <p>Include HTML</p>
+      <div>
+        <button @click="updateTableData">Refresh</button>
+      </div>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <template x-for="columnName in tableData.columns">
+              <th x-text="columnName"></th>
+            </template>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="row in tableData.data">
+            <tr>
+              <template x-for="data in row">
+                <td x-text="data"></td>
+              </template>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+      <div
+        x-data="{ shinyStatus: true }"
+        x-on:shiny-live.window="shinyStatus = false"
+        x-show="shinyStatus"
+      >
+        <div
+          x-data="{message : 'Waiting on Shiny'}"
+          x-on:message-from-shiny.window="message = $event.detail.message"
+        >
+          <div class="card mt-2">
+            <div class="card-body">
+              <p x-text="message"></p>
+              <button @click="sendMessageToShiny(message)">
+                Send to Shiny
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
