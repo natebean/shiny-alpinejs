@@ -2,7 +2,7 @@ function sendMessageToShiny(message) {
   if (typeof Shiny !== "undefined") {
     console.log("Message to Shiny");
     console.log("message", message);
-    Shiny.setInputValue("first_input", "Hi from JS " + Date.now());
+    Shiny.setInputValue("first_input", "Hi from JS");
   } else {
     console.log("Shiny disconnected");
   }

@@ -3,6 +3,7 @@
 
 
 library(shiny)
+library(lubridate)
 
 ui <- fluidPage(
   # tags$head(
@@ -22,7 +23,7 @@ server <- function(input, output, session) {
   
   output$first_round_trip <- renderText({
     print("first_input")
-    paste(input$first_input, " and back")
+    paste(input$first_input, " and back", now())
   })
 }
 
