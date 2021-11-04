@@ -29,17 +29,21 @@ function loadAlpine(message) {
   }
 }
 
-function loadAlpineDataStore(message) {
-  storeName = message.name[0];
-  storeData = message.data;
-  Alpine.store(storeName, {
-    data: storeData,
-    updateData(update) {
-      this.data = update;
-    },
-    sendDataToShiny() {
-      console.log("sending", storeName, this.data);
-      Shiny.setInputValue(storeName + "_data", JSON.stringify(this.data));
-    },
+function loadAlpineDataStore(dataPackage) {
+  console.log(dataPackage);
+
+  dataPackage.forEach((item) => {
+    storeName = item.name[0];
+    storeData = item.data;
+    Alpine.store(storeName, {
+      data: storeData,
+      updateData(update) {
+        this.data = update;
+      },
+      sendDataToShiny() {
+        console.log("sending", storeName, this.data);
+        Shiny.setInputValue(storeName + "_data", JSON.stringify(this.data));
+      },
+    });
   });
 }
