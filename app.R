@@ -2,30 +2,49 @@
 
 
 
+
 library(shiny)
 library(lubridate)
+library(bslib)
+source('shiny-alpinejs.R')
+library(tibble)
 
 ui <- fluidPage(
-  # tags$head(
-  #   tags$script(src = "https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js", defer = NA),
-  #   tags$script(src = "index.js"),
-  # ),
+  theme = bs_theme(version = 5),
+  tags$script(src = "alpine-loader.js"),
+  tags$script(src = "index.js"),
+  includeCSS("www/table-example.css"),
   h1("Hello World"),
-  includeHTML("www/include.html"),
-  div(class = "container",
-      p("From Shiny"),
-      textOutput("first_round_trip"))
+  p(`x-data` = "{ message: 'Awake at last!!'}", `x-text` = "message", "loading"),
+  includeHTML('www/table-example.html')
 )
 
 server <- function(input, output, session) {
-  session$sendCustomMessage("message-from-shiny", "Hi from Shiny")
-  print("running")
+  data <- tribble(
+    ~ column,
+    ~ title,
+    ~ robot,
+    "one-column",
+    "one-title",
+    "green-robot",
+    "two-column",
+    "two-title",
+    "red-robot"
+    
+  )
   
-  output$first_round_trip <- renderText({
-    print("first_input")
-    paste(input$first_input, " and back", now())
+  dataPackage <- list(name = "tableData", data = data)
+  
+  initialize_alpine(session, dataPackage)
+  
+  observeEvent(input$tableData_data, {
+    ans <- convert_alpine(input$tableData_data)
+    print(ans)
+    results <<- ans 
   })
+  
 }
 
 # Run the application
 shinyApp(ui = ui, server = server)
+
