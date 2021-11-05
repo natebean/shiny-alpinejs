@@ -46,4 +46,8 @@ document.addEventListener("alpine:init", () => {
       this.data = update;
     },
   });
+
+  Alpine.data("lateData", () => ({
+    value: "I'm late",
+  }));
 });

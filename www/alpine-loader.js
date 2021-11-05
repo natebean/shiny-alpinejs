@@ -1,20 +1,37 @@
 window.addEventListener("load", function () {
   if (typeof Shiny !== "undefined") {
-    Shiny.addCustomMessageHandler("alpine-initalize", loadAlpine);
+    Shiny.addCustomMessageHandler("alpine-update-data", updateAlpineDataStore);
+    initializeAlpine();
   } else {
     console.error("No Shiny Found");
   }
 });
 
-function loadAlpine(message) {
-  console.log("message", message);
-
-  if (typeof message !== "undefined") {
+function initializeAlpine() {
+  storageNameList = htmlAlpinePrep();
+  if (typeof storageNameList !== "undefined") {
     document.addEventListener("alpine:init", () => {
-      loadAlpineDataStore(message);
+      initializeAlpineDataStores(storageNameList);
     });
   }
+  loadAlpine();
+}
 
+function htmlAlpinePrep() {
+  var storageNameList = [];
+  shinyDataNodes = document.querySelectorAll("[x-shiny-data]");
+
+  shinyDataNodes.forEach((node) => {
+    storageName = node.getAttribute("x-shiny-data");
+    node.removeAttribute("x-shiny-data");
+    node.setAttribute("x-data", "$store." + storageName);
+    storageNameList.push(storageName);
+  });
+
+  return storageNameList;
+}
+
+function loadAlpine() {
   if (typeof Alpine === "undefined") {
     var alpine_script = document.createElement("script");
     alpine_script.setAttribute(
@@ -29,14 +46,10 @@ function loadAlpine(message) {
   }
 }
 
-function loadAlpineDataStore(dataPackage) {
-  console.log(dataPackage);
-
-  dataPackage.forEach((item) => {
-    storeName = item.name[0];
-    storeData = item.data;
+function initializeAlpineDataStores(storageNameList) {
+  storageNameList.forEach((storeName) => {
     Alpine.store(storeName, {
-      data: storeData,
+      data: [],
       updateData(update) {
         this.data = update;
       },
@@ -46,4 +59,10 @@ function loadAlpineDataStore(dataPackage) {
       },
     });
   });
+}
+function updateAlpineDataStore(dataPackage) {
+  console.log("updateAlpineDataStore", dataPackage);
+  storeName = dataPackage.name[0];
+  storeData = dataPackage.data;
+  Alpine.store(storeName).updateData(storeData);
 }

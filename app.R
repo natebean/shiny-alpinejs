@@ -23,7 +23,7 @@ ui <- fluidPage(
     p(`x-data` = "{ message: 'Awake at last!!'}", `x-text` = "message", "loading"),
     includeHTML('www/table-example.html'),
     div(
-      `x-data` = "$store.vectorList",
+      `x-shiny-data` = "vectorList",
       alpine_template(`x-for` = "item in data", p(`x-text` = "item"))
     )
   )
@@ -43,25 +43,13 @@ server <- function(input, output, session) {
     
   )
   
-  data_table_package <- list(name = "tableData", data = table_data)
-  
   vector_data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
   
-  vector_package <- list(name = 'vectorList', data = vector_data)
-  
-  
-  data_package <- list(data_table_package,
-                       vector_package)
-  
-  data_table_package <-
-    list(name = "tableData", data = data_package)
-  
-  
-  
-  initialize_alpine(session, data_package)
+  update_alpine_data(session, 'tableData', table_data)
+  update_alpine_data(session, 'vectorList', vector_data)
   
   observeEvent(input$tableData_data, {
-    ans <- convert_alpine(input$tableData_data)
+    ans <- convert_from_alpine(input$tableData_data)
     print(ans)
     results <<- ans
   })
