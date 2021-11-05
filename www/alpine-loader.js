@@ -1,7 +1,8 @@
 window.addEventListener("load", function () {
+  console.log("window:load");
+  initializeAlpine();
   if (typeof Shiny !== "undefined") {
     Shiny.addCustomMessageHandler("alpine-update-data", updateAlpineDataStore);
-    initializeAlpine();
   } else {
     console.error("No Shiny Found");
   }
@@ -11,11 +12,16 @@ function initializeAlpine() {
   storageNameList = htmlAlpinePrep();
   if (typeof storageNameList !== "undefined") {
     document.addEventListener("alpine:init", () => {
+      console.log("alpine:init");
       initializeAlpineDataStores(storageNameList);
     });
   }
   loadAlpine();
 }
+
+$(document).on("shiny:connected", function (event) {
+  console.log("shiny:connected");
+});
 
 function htmlAlpinePrep() {
   var storageNameList = [];
@@ -60,9 +66,14 @@ function initializeAlpineDataStores(storageNameList) {
     });
   });
 }
+
 function updateAlpineDataStore(dataPackage) {
   console.log("updateAlpineDataStore", dataPackage);
   storeName = dataPackage.name[0];
   storeData = dataPackage.data;
   Alpine.store(storeName).updateData(storeData);
+}
+
+function sendDataToShiny(storeName) {
+  Alpine.store(storeName).sendDataToShiny();
 }
