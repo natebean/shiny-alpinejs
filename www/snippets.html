@@ -1,0 +1,22 @@
+<div
+  class="title-value"
+  x-data="{open: false, editing: false}"
+  @mouseover="open = true"
+  @mouseout="open = false"
+>
+  <span x-text="row.title" x-show="!editing"></span>
+  <div x-show="open && !editing" class="edit-panel" @mouseout="open = false">
+    <i class="bi bi-pencil edit-icon" @click="editing = true"></i>
+    <i class="bi bi-pencil edit-icon" @click="row.robot = 'green-robot'"></i>
+    <i class="bi bi-pencil edit-icon" @click="row.robot = 'hidden-robot'"></i>
+  </div>
+  <div>
+    <input
+      type="text"
+      x-show="editing"
+      :value="row.title"
+      @keyup.enter="editing = false; row.title = $event.target.value.trim(); $event.target.value = row.title"
+      @keyup.escape="editing = false"
+    />
+  </div>
+</div>

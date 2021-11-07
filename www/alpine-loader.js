@@ -12,7 +12,6 @@ function initializeAlpine() {
   storageNameList = htmlAlpinePrep();
   if (typeof storageNameList !== "undefined") {
     document.addEventListener("alpine:init", () => {
-      console.log("alpine:init->Init Stores");
       initializeAlpineDataStores(storageNameList);
     });
   }
@@ -44,7 +43,6 @@ function loadAlpine() {
       "src",
       "https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
     );
-
     document.head.appendChild(alpine_script);
   } else {
     console.warn("Alpine already loaded");
@@ -67,17 +65,12 @@ function initializeAlpineDataStores(storageNameList) {
 }
 
 function updateAlpineDataStore(dataPackage) {
-  console.log("updateAlpineDataStore", dataPackage);
-  storeName = dataPackage.name[0];
-  storeData = dataPackage.data;
   if (typeof Alpine === "undefined") {
-    console.warn("Alpine not loaded");
     document.addEventListener("alpine:init", () => {
-      console.log("alpine:init:updateData");
-      updateADS(storeName, storeData);
+      updateADS(dataPackage.name[0], dataPackage.data);
     });
   } else {
-    updateADS(storeName, storeData);
+    updateADS(dataPackage.name[0], dataPackage.data);
   }
 }
 

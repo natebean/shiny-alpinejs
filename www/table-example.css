@@ -6,12 +6,12 @@
 .hidden-robot {
   visibility: hidden;
 }
-.green-robot path {
-  fill: green;
+.green-robot {
+  color: green;
 }
 
-.red-robot path {
-  fill: red;
+.red-robot {
+  color: red;
 }
 
 .robot-column {
