@@ -1,11 +1,4 @@
 
-
-
-
-
-
-
-
 library(shiny)
 library(lubridate)
 library(bslib)
@@ -20,8 +13,6 @@ ui <- fluidPage(
   div(
     class = "container",
     h1("Hello World"),
-    p(`x-data` = "{ message: 'Awake at last!!'}", `x-text` = "message", "loading"),
-    includeHTML('www/table-example.html'),
     div(
       `x-shiny-data` = "vectorList",
       alpine_template(`x-for` = "item in data", p(`x-text` = "item"))

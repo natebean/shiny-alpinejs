@@ -12,7 +12,7 @@ function initializeAlpine() {
   storageNameList = htmlAlpinePrep();
   if (typeof storageNameList !== "undefined") {
     document.addEventListener("alpine:init", () => {
-      console.log("alpine:init");
+      console.log("alpine:init->Init Stores");
       initializeAlpineDataStores(storageNameList);
     });
   }
@@ -44,11 +44,10 @@ function loadAlpine() {
       "src",
       "https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
     );
-    alpine_script.setAttribute("defer", true);
 
     document.head.appendChild(alpine_script);
   } else {
-    console.error("Alpine already loaded");
+    console.warn("Alpine already loaded");
   }
 }
 
@@ -71,7 +70,23 @@ function updateAlpineDataStore(dataPackage) {
   console.log("updateAlpineDataStore", dataPackage);
   storeName = dataPackage.name[0];
   storeData = dataPackage.data;
-  Alpine.store(storeName).updateData(storeData);
+  if (typeof Alpine === "undefined") {
+    console.warn("Alpine not loaded");
+    document.addEventListener("alpine:init", () => {
+      console.log("alpine:init:updateData");
+      updateADS(storeName, storeData);
+    });
+  } else {
+    updateADS(storeName, storeData);
+  }
+}
+
+function updateADS(storeName, storeData) {
+  if (Alpine.store(storeName) !== undefined) {
+    Alpine.store(storeName).updateData(storeData);
+  } else {
+    console.warn(`${storeName} not found`);
+  }
 }
 
 function sendDataToShiny(storeName) {
