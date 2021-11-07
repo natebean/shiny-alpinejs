@@ -1,0 +1,71 @@
+.robot {
+  height: 25px;
+  width: 25px;
+}
+
+.hidden-robot {
+  visibility: hidden;
+}
+.green-robot path {
+  fill: green;
+}
+
+.red-robot path {
+  fill: red;
+}
+
+.robot-column {
+  text-align: center;
+  width: 70px;
+}
+
+.text-column {
+  text-align: center;
+  width: 170px;
+}
+.title-value {
+  padding: -5px;
+}
+.title-value:hover {
+  background-color: beige;
+}
+
+.edit-panel {
+  margin-left: 10px;
+  float: right;
+}
+
+.edit-icon {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+
+/* Tooltip container */
+.the-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.the-tooltip .the-tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.the-tooltip:hover .the-tooltip-text {
+  visibility: visible;
+}
