@@ -48,7 +48,7 @@ ui <- fluidPage(
                 tags$div(
                   class = "title-value", `x-data` = "{open: false, editing: false}",
                   `@mouseover` = "open = true",
-                  `@mouseout` = "open = false",
+                  `@mouseleave` = "open = false",
                   tags$span(`x-text` = "row.title", `x-show` = "!editing"),
                   tags$div(
                     `x-show` = "open && !editing",
@@ -128,7 +128,6 @@ server <- function(input, output, session) {
 
   observeEvent(input$tableData_data, {
     ans <- convert_from_alpine(input$tableData_data)
-    print(ans)
     return <- ans %>% filter(robot_change == "liked")
     update_alpine_data(session, "likedData", return)
   })

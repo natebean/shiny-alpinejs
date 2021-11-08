@@ -3,22 +3,15 @@ function getRandomInt(max) {
 }
 
 function updateTableData(e) {
-  console.log("updateTableData");
-  Alpine.store("tableData").updateData([
-    {
-      column: "one " + getRandomInt(100),
-      title: "two " + getRandomInt(100),
+  const data = Array.from(Array(10)).map((_, i) => {
+    randomName = getRandomInt(100)
+    return {
+      column: `column ${randomName}`,
+      title: `title ${randomName}`,
       robot: getRandomInt(10) > 5 ? "green-robot" : "red-robot",
-    },
-    {
-      column: "one " + getRandomInt(100),
-      title: "two " + getRandomInt(100),
-      robot: getRandomInt(10) > 5 ? "green-robot" : "red-robot",
-    },
-    {
-      column: "one " + getRandomInt(100),
-      title: "two " + getRandomInt(100),
-      robot: getRandomInt(10) > 5 ? "green-robot" : "red-robot",
-    },
-  ]);
+      title_change: "",
+      robot_change: "",
+    };
+  });
+  Alpine.store("tableData").updateData(data);
 }

@@ -83,7 +83,6 @@ function initializeAlpineDataStores(storageNameList) {
         this.data = update;
       },
       sendDataToShiny() {
-        console.log("sending", storeName, this.data);
         Shiny.setInputValue(storeName + "_data", JSON.stringify(this.data));
       },
     });
