@@ -26,13 +26,13 @@ ui <- fluidPage(
       class = "container",
       div(
         style = "margin: 10px 0",
-        tags$button(`@click` = "updateTableData", class = "btn btn-dark", "Refresh")
+        tags$button(`@click` = "updateTableData", class = "btn btn-dark", "Generate Fake Data")
       ),
       tags$table(
         class = "table table-border narrow-table",
         tags$thead(tags$tr(
-          tags$th(class = "text-column", "Column"),
-          tags$th(class = "text-column", "Title"),
+          tags$th("Column"),
+          tags$th("Title"),
           tags$th(class = "robot-column", tags$i(class = "bi bi-robot"))
         )),
         tags$tbody(
@@ -86,7 +86,7 @@ ui <- fluidPage(
       ),
       tags$button(
         `@click` = "sendDataToShiny('tableData')",
-        class = "btn btn-dark", "Save"
+        class = "btn btn-dark", "Send to Shiny"
       )
     )
   )
@@ -94,15 +94,10 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   table_data <- tribble(
-    ~column,
-    ~title,
-    ~robot,
-    "one-column",
-    "one-title",
-    "green-robot",
-    "two-column",
-    "two-title",
-    "red-robot"
+    ~column, ~title, ~robot,
+    "one-column", "one-title", "green-robot",
+    "two-column", "two-title", "red-robot",
+    "three-column", "three-title", ""
   )
 
   update_alpine_data(session, "tableData", table_data)
