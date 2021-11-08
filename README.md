@@ -12,8 +12,8 @@ You will access the data of the store in Alpine using `data` (see below)
     div(`x-shiny-data` = "hello_world", 
 	    p(`x-text` = "data")
 	   )
-    #You can think of my_shiny_data as a list with a data element.
-    my_shiny_data <- list(data = "Hello World")
+    #You can think of hello_world as a list with a data element.
+    hello_world <- list(data = "Hello World")
 
 
 ## Shiny Server
