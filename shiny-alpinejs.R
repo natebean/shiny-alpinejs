@@ -3,7 +3,7 @@ library(jsonlite)
 update_alpine_data <- function(session, name, data) {
   data_package <- list(name = name, data = data)
   session$sendCustomMessage(
-    "alpine:update-data",
+    "shiny-alpine:update-data",
     jsonlite::toJSON(data_package)
   )
 }

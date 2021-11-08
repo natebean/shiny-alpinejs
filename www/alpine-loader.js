@@ -4,7 +4,7 @@
 window.addEventListener("load", function () {
   initializeAlpine();
   if (typeof Shiny !== "undefined") {
-    Shiny.addCustomMessageHandler("alpine:update-data", updateAlpineDataStore);
+    Shiny.addCustomMessageHandler("shiny-alpine:update-data", updateAlpineDataStore);
   } else {
     console.error("No Shiny Found");
   }

@@ -1,8 +1,10 @@
 library(shiny)
 library(lubridate)
 library(bslib)
-source("shiny-alpinejs.R")
 library(tibble)
+library(stringr)
+library(dplyr)
+source("shiny-alpinejs.R")
 
 ui <- fluidPage(
   theme = bs_theme(version = 5),
@@ -30,11 +32,13 @@ ui <- fluidPage(
       ),
       tags$table(
         class = "table table-border narrow-table",
-        tags$thead(tags$tr(
-          tags$th("Column"),
-          tags$th("Title"),
-          tags$th(class = "robot-column", tags$i(class = "bi bi-robot"))
-        )),
+        tags$thead(
+          tags$tr(
+            tags$th("Column"),
+            tags$th("Title"),
+            tags$th(class = "robot-column", tags$i(class = "bi bi-robot"))
+          )
+        ),
         tags$tbody(
           tags$template(
             `x-for` = "row in data",
@@ -42,27 +46,32 @@ ui <- fluidPage(
               tags$td(`x-text` = "row.column"),
               tags$td(
                 tags$div(
-                  class = "title-value",
-                  `x-data` = "{open: false, editing: false}",
+                  class = "title-value", `x-data` = "{open: false, editing: false}",
                   `@mouseover` = "open = true",
                   `@mouseout` = "open = false",
-                  tags$span(
-                    `x-text` = "row.title",
-                    `x-show` = "!editing"
-                  ),
+                  tags$span(`x-text` = "row.title", `x-show` = "!editing"),
                   tags$div(
                     `x-show` = "open && !editing",
                     class = "edit-panel",
-                    tags$i(class = "bi bi-pencil edit-icon", `@click` = "editing = true;"),
+                    tags$i(
+                      class = "bi bi-pencil edit-icon",
+                      `@click` = "editing = true;"
+                    ),
                     tags$i(
                       class = "bi bi-check-circle edit-icon",
                       style = "color: green",
-                      `@click` = "row.robot = 'green-robot'"
+                      `@click` = str_squish("
+                            row.robot = 'green-robot';
+                            row.robot_change = 'liked';
+                      ")
                     ),
                     tags$i(
                       class = "bi bi-x-circle edit-icon",
                       style = "color: red",
-                      `@click` = "row.robot = 'hidden-robot'"
+                      `@click` = str_squish("
+                              row.robot = 'hidden-robot';
+                              row.robot_change = 'rejected';
+                      ")
                     )
                   ),
                   tags$div(
@@ -70,7 +79,13 @@ ui <- fluidPage(
                       type = "text",
                       `x-show` = "editing",
                       `:value` = "row.title",
-                      `@keyup.enter` = "editing = false; row.title = $event.target.value.trim(); $event.target.value = row.title;",
+                      `@keyup.enter` = str_squish("editing = false;
+                                        var newValue = $event.target.value.trim();
+                                        if(newValue !== row.title) {
+                                          row.title_change = 'updated';
+                                        }
+                                        row.title = newValue ;
+                                        $event.target.value = row.title;"),
                       `@blur` = "editing = false"
                     )
                   )
@@ -88,16 +103,25 @@ ui <- fluidPage(
         `@click` = "sendDataToShiny('tableData')",
         class = "btn btn-dark", "Send to Shiny"
       )
+    ),
+    div(
+      class = "m-2",
+      `x-shiny-data` = "likedData",
+      h5("Liked Titles"),
+      tags$template(
+        `x-for` = "item in data",
+        p(`x-text` = "item.title")
+      )
     )
   )
 )
 
 server <- function(input, output, session) {
   table_data <- tribble(
-    ~column, ~title, ~robot,
-    "one-column", "one-title", "green-robot",
-    "two-column", "two-title", "red-robot",
-    "three-column", "three-title", ""
+    ~id, ~column, ~title, ~robot, ~title_change, ~robot_change,
+    1, "one-column", "one-title", "green-robot", "", "",
+    2, "two-column", "two-title", "red-robot", "", "",
+    3, "three-column", "three-title", "", "", ""
   )
 
   update_alpine_data(session, "tableData", table_data)
@@ -105,7 +129,8 @@ server <- function(input, output, session) {
   observeEvent(input$tableData_data, {
     ans <- convert_from_alpine(input$tableData_data)
     print(ans)
-    results <<- ans
+    return <- ans %>% filter(robot_change == "liked")
+    update_alpine_data(session, "likedData", return)
   })
 }
 
