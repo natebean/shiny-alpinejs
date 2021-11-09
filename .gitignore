@@ -38,4 +38,5 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-/rsconnect/
+rsconnect/
+rsconnect/rs-connect-d.genmills.com/G0122NB/shiny-alpinejs.dcf
