@@ -1,0 +1,18 @@
+Package: shinyAlpinejs
+Title: Intergate Alpine.js and Shiny
+Version: 0.0.0.9000
+Authors@R: 
+    person("Nathan", "Bean", , "natejbean@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = ""))
+Description: Provides a small set of helper functions to use Alpine.js in Shiny with minimal Javascript.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports:
+  jsonlite,
+  stringr,
+  htmltools
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

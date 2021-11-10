@@ -4,7 +4,7 @@ library(bslib)
 library(tibble)
 library(stringr)
 library(dplyr)
-source("shiny-alpinejs.R")
+library(shinyAlpinejs)
 
 ui <- fluidPage(
   theme = bs_theme(version = 5),

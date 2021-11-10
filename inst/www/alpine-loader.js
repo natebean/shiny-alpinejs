@@ -56,7 +56,7 @@ function loadAlpine() {
     var alpine_script = document.createElement("script");
     alpine_script.setAttribute(
       "src",
-      "https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+      "https://unpkg.com/alpinejs@3.5.1/dist/cdn.min.js"
     );
     document.head.appendChild(alpine_script);
   } else {
