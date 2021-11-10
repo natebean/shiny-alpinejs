@@ -1,4 +1,4 @@
-# Shiny-Alpine.js
+# shinyAlpinejs
 
 A small integration of Shiny and [Alpine.js](http://alpinejs.dev).
 It uses Alpine and some 'glue' to integrate Shiny and [Alpine.js stores](https://alpinejs.dev/magics/store)
@@ -15,6 +15,14 @@ You will access the data of the store in Alpine using `data` (see below)
     #You can think of hello_world as a list with a data element.
     hello_world <- list(data = "Hello World")
 
+To avoid backticks you can use `withAlpine()`.  
+This will do the following conversions
+| R Friendly      | Alpine Directive |
+| -----------     | -----------      |
+| `x_*`           | `x-*`            |
+| `x_bind_*`      | `x-bind:*`       |
+| `x_on_*`        | `x-on:*`         |
+| `x_shiny_data`  | `x-shiny-data`   |
 
 ## Shiny Server
 To send data to Alpine
